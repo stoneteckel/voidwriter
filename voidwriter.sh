@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# === VOIDWRITER v1.0 - Safety edition ===
+# === VOIDWRITER v1.0.1 - Label Compatibility Hotfix ===
 # Cyber-formatting utility for terminal sorcerers.
 # No colors. Checks if partitions are mounted before wiping.
 
@@ -48,7 +48,7 @@ export LC_ALL=C
 trap "type_out 'ABORTED! System may be unstable. Please reboot before retrying.'; exit 1" SIGINT
 
 clear
-type_out "<< VOIDWRITER v1.0 >>" 0.01
+type_out "<< VOIDWRITER v1.0.1 >>" 0.01
 sleep 0.3
 type_out ">>> Boot sequence initiated..." 0.01
 type_out "Decrypting the storage grid..." 0.01
@@ -172,11 +172,31 @@ fi
 
 clear
 type_out ">>> Formatting ${partition} as ${fs_type}..." 0.01
-mkfs."$fs_type" -F "$partition"
+
+case "$fs_type" in
+    ext4)
+        mkfs_cmd="mkfs.ext4"
+        mkfs_opts="-F -L VOIDDISK"
+        ;;
+    xfs)
+        mkfs_cmd="mkfs.xfs"
+        mkfs_opts="-f -L VOIDDISK"
+        ;;
+    btrfs)
+        mkfs_cmd="mkfs.btrfs"
+        mkfs_opts="-f -L VOIDDISK"
+        ;;
+    *)
+        type_out ">>> ERROR: Unsupported filesystem." 0.01
+        exit 1
+        ;;
+esac
+
+$mkfs_cmd $mkfs_opts "$partition"
 
 clear
 echo ""
 loading_bar
 type_out ">>> VOID SUCCESS: ${partition} resurrected from the digital abyss." 0.01
 type_out ">>> NOTE: Run 'sudo partprobe $device' or reboot to reload partition table." 0.01
-type_out ">>> VOIDWRITER v1.0 — Session terminated." 0.01
+type_out ">>> VOIDWRITER v1.0.1 — Session terminated." 0.01

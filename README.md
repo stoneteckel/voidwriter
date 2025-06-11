@@ -1,4 +1,4 @@
-# VOIDWRITER v1.0
+# VOIDWRITER v1.0.1
 
 ***Cyber-formatting utility for terminal sorcerers.***
 
@@ -64,6 +64,14 @@ VOIDWRITER is open to modification, remixing, and personalization.
 - Integration with secure erase / blkdiscard
 
 - Live ISO / initramfs mode
+
+---
+
+## Changelog
+**v1.0.1 - D-Bus Whisperer Patch**  
+- Cybernodes now receive proper filesystem labels.  
+- Fixes mysterious "No object for D-Bus interface" when exploring freshly formatted XFS volumes.  
+- Partitions are now auto-mounted by mortal file explorers without manual summoning.
 
 ## LICENSE: THE VOID CODE
 

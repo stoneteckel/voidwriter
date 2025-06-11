@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# === VOIDWRITER v1.0 - Safety edition ===
+# === VOIDWRITER v1.0.1 - Label Compatibility Hotfix ===
 # Cyber-formatting utility for terminal sorcerers.
 # No colors. Checks if partitions are mounted before wiping.
 
@@ -172,7 +172,27 @@ fi
 
 clear
 type_out ">>> Formatting ${partition} as ${fs_type}..." 0.01
-mkfs."$fs_type" -F "$partition"
+
+case "$fs_type" in
+    ext4)
+        mkfs_cmd="mkfs.ext4"
+        mkfs_opts="-F -L VOIDDISK"
+        ;;
+    xfs)
+        mkfs_cmd="mkfs.xfs"
+        mkfs_opts="-f -L VOIDDISK"
+        ;;
+    btrfs)
+        mkfs_cmd="mkfs.btrfs"
+        mkfs_opts="-f -L VOIDDISK"
+        ;;
+    *)
+        type_out ">>> ERROR: Unsupported filesystem." 0.01
+        exit 1
+        ;;
+esac
+
+$mkfs_cmd $mkfs_opts "$partition"
 
 clear
 echo ""
